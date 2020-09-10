@@ -1,6 +1,12 @@
 <template>
-  <div class="container">
-    <h1>Home</h1>
+  <div class="container pt-3">
+    <div class="row mb-3">
+      <div class="col-12 text-right">
+        <router-link to="/product/create">
+          <button class="btn btn-primary">Create</button>
+        </router-link>
+      </div>
+    </div>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -16,8 +22,11 @@
           <td>{{ product.name }}</td>
           <td class="text-center">{{product.price}}</td>
           <td class="text-center">
-            <buttin class="btn btn-warning">Edit</buttin>
-            <buttin class="btn btn-danger">Delete</buttin>
+            <router-link
+              :to="{ name: 'Editeproduct', params: {id:product._id}}"
+              class="btn btn-warning"
+            >Edit</router-link>
+            <button class="btn btn-danger" v-on:click="delProduct(product._id)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -33,6 +42,9 @@ export default {
   methods: {
     getProducts() {
       this.$store.dispatch("getProducts");
+    },
+    delProduct(id) {
+      this.$store.dispatch("delProduct", id);
     },
   },
 };
