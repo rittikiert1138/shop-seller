@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from '../router'
+import router from "../router";
 
 export const product = {
   state: {
@@ -17,33 +17,27 @@ export const product = {
         .catch(err => alert(err));
     },
     async addProduct({ dispatch }, payload) {
-      await axios
-        .post(
-          "http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/store",
-          payload
-        )
-      await dispatch('getProducts')
-      await router.push('/product')
+      await axios.post(
+        "http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/store",
+        payload
+      );
+      await dispatch("getProducts");
+      await router.push("/product");
     },
-    async editProduct({ dispatch }, payload) {
-      let _id = "5f5a51b92fabd608a9047316"
-      console.log(payload.id)
-      const res = await axios
-        .get(
-          `http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/edit/${_id}`
-        )
+    async editProduct({ commit }, _id) {
+      const res = await axios.get(
+        `http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/edit/${_id}`
+      );
 
-      // console.log(res.data)
-      // await dispatch('getProducts')
-      // await router.push('/product')
+      commit("getProduct", { res });
     },
     async delProduct({ dispatch }, id) {
-      if (window.confirm('Press a button!')) {
-        await axios
-          .delete(
-            "http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/destroy/" + id
-          )
-        await dispatch('getProducts')
+      if (window.confirm("Press a button!")) {
+        await axios.delete(
+          "http://ec2-54-251-228-199.ap-southeast-1.compute.amazonaws.com:8083/apis/product/destroy/" +
+            id
+        );
+        await dispatch("getProducts");
       }
     }
   },
@@ -52,9 +46,10 @@ export const product = {
     getProducts(state, { res }) {
       state.products = res.data;
     },
-    addProduct(state, { payload }) {
-
+    getProduct(state, { res }) {
+      state.products = res.data;
     },
+    addProduct(state, { payload }) {}
   },
 
   getters: {
